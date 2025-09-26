@@ -18,6 +18,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    deviceType: {
+      type: String,
+      required: true,
+    },
     productImg: {
       type: String,
     },
