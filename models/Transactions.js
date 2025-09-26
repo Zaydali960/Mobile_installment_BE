@@ -66,6 +66,10 @@ const transactionSchema = new mongoose.Schema(
     cashPrice: {
         type: Number,
         
+      },
+      advanceInstalment: {
+      type: Number,
+
     },
     installmentPrice: {
         type: Number,
