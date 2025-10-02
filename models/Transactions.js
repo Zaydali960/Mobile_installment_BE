@@ -56,12 +56,20 @@ const transactionSchema = new mongoose.Schema(
         required: true,
     },
     
-    transactionType:{
+    productDetails:{
         type: String, 
         required: true,
     },
-    installments: [
-{type:Number}
+    transactionType:{
+        type: String, 
+        required: true,
+      },
+     installments: [
+  {
+    amount: { type: Number, required: true },
+    status: { type: String, default: "Pending" },
+    date: { type: Date, required: true }
+  }
 ],
     cashPrice: {
         type: Number,
@@ -74,6 +82,10 @@ const transactionSchema = new mongoose.Schema(
     installmentPrice: {
         type: Number,
         
+    },
+    recycled: {
+      type: Boolean,
+      default: false,
     },
    date: { type: Date, default: Date.now }
   },

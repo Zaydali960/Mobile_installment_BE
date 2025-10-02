@@ -9,7 +9,8 @@ router.post("/create-transaction", async (req, res) => {
   try {
     const transaction = new Transactions(req.body);
     await transaction.save();
-    res.status(201).json({ success: true, transaction });
+    //  res.json({ success: true, transaction });
+    return res.status(201).json({ success: true, transaction });
   } catch (err) {
     res.status(400).json({ success: false, message: err.message });
   }
@@ -19,7 +20,7 @@ router.post("/create-transaction", async (req, res) => {
 // READ all 
 router.get("/get-transactions", async (req, res) => {
   try {
-    const transactions = await Transactions.find().populate("productType");
+    const transactions = await Transactions.find({ recycled: false }).populate("productType");
     res.json({ success: true, transactions });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -78,6 +79,41 @@ router.get("/get-transaction/:id", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+
+router.get("/get-recycled-transactions", async (req, res) => {
+  try {
+    // ✅ Only fetch transactions where recycle = true
+    const transactions = await Transactions.find({ recycled: true }).populate("productType");
+    res.json({ success: true, transactions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ✅ Fetch only CASH transactions
+router.get("/get-cash-transactions", async (req, res) => {
+  try {
+    const transactions = await Transactions.find({ transactionType: "cash" })
+      .populate("productType");
+    res.json({ success: true, transactions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ✅ Fetch only INSTALMENT transactions
+router.get("/get-instalment-transactions", async (req, res) => {
+  try {
+    const transactions = await Transactions.find({ transactionType: "instalments" })
+      .populate("productType");
+    res.json({ success: true, transactions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 
 
 module.exports = router
